@@ -1,6 +1,5 @@
 from Rotor import Rotor
 from Reflector import Reflector
-import Keyboard
 from Plugboard import Plugboard
 import PySimpleGUI as display
 
@@ -8,11 +7,11 @@ import PySimpleGUI as display
 # TODO : need to set initial rotation of rotors and actually do rotation
 
 # rotor and notch information found on https://en.wikipedia.org/wiki/Enigma_rotor_details
-I = Rotor("I", "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q")
-II = Rotor("II", "AJDKSIRUXBLHWTMCQGZNPYFVOE", "E")
-III = Rotor("III", "BDFHJLCPRTXVZNYEIWGAKMUSQO", "V")
-IV = Rotor("IV", "ESOVPZJAYQUIRHXLNFTGKDCMWB", "J")
-V = Rotor("V", "VZBRGITYUPSDNHLXAWMJQOFECK", "Z")
+I = Rotor("I", "EKMFLGDQVZNTOWYHXUSPAIBRCJ", "Q", 1, 1)
+II = Rotor("II", "AJDKSIRUXBLHWTMCQGZNPYFVOE", "E", 1, 1)
+III = Rotor("III", "BDFHJLCPRTXVZNYEIWGAKMUSQO", "V", 1, 1)
+IV = Rotor("IV", "ESOVPZJAYQUIRHXLNFTGKDCMWB", "J", 1, 1)
+V = Rotor("V", "VZBRGITYUPSDNHLXAWMJQOFECK", "Z", 1, 1)
 
 A = Reflector("A", "EJMZALYXVBWFCRQUONTSPIKHGD")
 B = Reflector("B", "YRUHQSLDPXNGOKMIEBFZCWVJAT")
@@ -36,18 +35,14 @@ def processSignal(original, rotors, plugs, reflector):
         if letter == " ":
             output += " "
         else:
-            x = Keyboard.forward(letter)
-            x = plugs.forward(x)
+            x = plugs.forward(letter)
             for rotor in rotors:
                 x = rotor.forward(x)
             x = reflector.reflect(x)
             for rotor in reversed(rotors):
-                x = rotor.backward(x)
-            x = plugs.backward(x)
-            x = Keyboard.backward(x)
+                x = rotor.forward(x)
             output += x
     return output
-
 
 def main():
     """
@@ -138,6 +133,8 @@ def main():
             currentPlugs = []
     
             if values["rotor1"] != "":
+                tempRotor = Rotor(values["rotor1"])
+                # tempRotor.position = 
                 currentRotors.append(values["rotor1"])
             if values["rotor2"] != "" and values["rotor2"] not in currentRotors:
                     currentRotors.append(values["rotor2"])

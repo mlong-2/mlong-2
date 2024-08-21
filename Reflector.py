@@ -18,7 +18,7 @@ class Reflector:
         self.input = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         self.output = rotor
 
-    def reflect(self, index):
+    def reflect(self, letter):
         """
         Parameters
         __________
@@ -26,9 +26,11 @@ class Reflector:
 
         Takes input of a index to return the a different index corresponding to that index in the specificed rotor.
         """
-        letter = self.output[index]
-        index = self.input.find(letter)
-        return index
+        if (letter == " "):
+            return " "
+        x = self.input.find(letter)
+        output = self.output[x]
+        return output
     
     def __str__(self):
         """

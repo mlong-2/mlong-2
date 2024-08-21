@@ -9,7 +9,7 @@ class Rotor:
     To be used as part of an Enigma System.
     """
 
-    def __init__(self, ID, rotor, notch):
+    def __init__(self, ID, rotor, notch, start, position):
         """
         Parameters
         __________
@@ -19,14 +19,25 @@ class Rotor:
 
         notch : char indicating at which point of the rotor causes the rotor to its left to rotate
 
+        start : starting rotation of the rotor
+
+        position : location of rotor from left to right (IE furthest left rotor is 1, if all 5 rotors present, furthest right rotor is 5). 
+        Used so that the furthest right rotor is rotated first before anything left until the notch is hit.
+
         Init function of the Rotor object.
         """
-        self.input = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        self.ID = ID
-        self.output = rotor
-        self.notch = notch
+        self.map = {}
+        input = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        for x in range(26):
+            self.map[input[x]] = rotor[x]
 
-    def forward(self, index):
+        self.ID = ID
+        self.rotor = rotor
+        self.notch = notch
+        self.rotation = start
+        self.position = position
+
+    def forward(self, letter):
         """
         Parameters
         __________
@@ -34,21 +45,10 @@ class Rotor:
 
         Takes input of a letter to return the index in the alphabet that that letter corresponds to.
         """
-        letter = self.output[index]
-        index = self.input.find(letter)
-        return index
-
-    def backward(self, index):
-        """
-        Parameters
-        __________
-        index : index in the alphabet
-
-        Takes input of a index to return the letter in the alphabet that that index corresponds to.
-        """
-        letter = self.input[index]
-        index = self.output.find(letter)
-        return index
+        if (letter == " "):
+            return " "
+        output = self.map[letter]
+        return output
     
     def __str__(self):
         """

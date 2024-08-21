@@ -18,37 +18,33 @@ class Plugboard:
 
         Takes input list of two char strings that will be swapped. 
         """
-        self.input = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        self.output = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        self.map = {}
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+        for x in range(26):
+            self.map[alphabet[x]] = alphabet[x]
+        
         for pair in pairs:
-            A = pair[0]
-            B = pair[1]
-            pos_A = self.input.find(A)
-            pos_B = self.output.find(B)
-            self.input = self.input[:pos_A] + A + self.input[pos_A + 1:]
-            self.input = self.input[:pos_B] + B + self.input[pos_B + 1:]
+            char1 = pair[0]
+            char2 = pair[1]
+            self.map[char1] = char2
+            self.map[char2] = char1
 
-    def forward(self, index):
+    def forward(self, letter):
         """
         Parameters
         __________
-        letter : input letter (char)
+        index : input index of the alphabet
 
-        Takes input of a letter to return the index in the alphabet that that letter corresponds to.
         """
-        letter = self.output[index]
-        index = self.input.find(letter)
-        return index
+        if (letter == " "):
+            return " "
+        return self.map[letter]
+    
+    def resetMap(self):
+        self.map = {}
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-    def backward(self, index):
-        """
-        Parameters
-        __________
-        index : index in the alphabet
-
-        Takes input of a index to return the letter in the alphabet that that index corresponds to.
-        """
-        letter = self.input[index]
-        index = self.output.find(letter)
-        return index
+        for x in range(26):
+            self.map[alphabet[x]] = alphabet[x]
 
